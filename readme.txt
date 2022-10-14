@@ -1,23 +1,14 @@
-Thank you for downloading this project.
 
----------------Ventura - User Management-------------
+---------------User Management-------------
 
----------------want to run this project------------------
+---------------Comment installer le projet ?------------------
 
-Step 1 : Extract .zip file to your website root folder.
 
-Step 2 : Install database/user_management.sql file on phpmyadmin
+Step 1 : Installer la Bdd dans phpmyadmin 
 
-Step 3 : Edit assets/php/config.php file data.
+Step 2 : Modifier le fichier assets/php/config.php 
 
-Step 4 : Edit assets/admin/php/config.php file data.
+Step 3 : Modifier le fichier assets/admin/php/config.php 
 
-Now Enter : http://your site-url/    AND Admin Area: http://your site-url/admin
 
-Default Password for Admin Account : admin
-
-Enjoy This Project.
-
-(Note: Internet Connection is Required for Sending E-Mails.).
-
-Regards, CampCodes.com
+Email et Mot de passe admin : admin
