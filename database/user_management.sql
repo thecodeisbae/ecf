@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.2
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 23, 2020 at 03:29 PM
--- Server version: 10.4.11-MariaDB
--- PHP Version: 7.4.1
+-- Hôte : 127.0.0.1
+-- Généré le : ven. 14 oct. 2022 à 23:41
+-- Version du serveur : 10.4.25-MariaDB
+-- Version de PHP : 8.1.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -19,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `user_management`
+-- Base de données : `user_management`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Structure de la table `admin`
 --
 
 CREATE TABLE `admin` (
@@ -35,7 +34,7 @@ CREATE TABLE `admin` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dumping data for table `admin`
+-- Déchargement des données de la table `admin`
 --
 
 INSERT INTO `admin` (`id`, `username`, `password`) VALUES
@@ -44,7 +43,7 @@ INSERT INTO `admin` (`id`, `username`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `feedback`
+-- Structure de la table `feedback`
 --
 
 CREATE TABLE `feedback` (
@@ -56,27 +55,18 @@ CREATE TABLE `feedback` (
   `replied` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Déchargement des données de la table `feedback`
+--
+
+INSERT INTO `feedback` (`id`, `uid`, `subject`, `feedback`, `created_at`, `replied`) VALUES
+(6, 1, 'Changer adresse Mail', 'Bonjour, \r\nJ&#039;aimerai changer mot adresse email car celle-ci &agrave; &eacute;t&eacute; pirat&eacute; merci !', '2022-10-11 20:40:58', 0),
+(7, 1, 'Hello', 'Merci', '2022-10-11 20:41:52', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notes`
---
-
-CREATE TABLE `notes` (
-  `id` int(11) NOT NULL,
-  `uid` int(11) NOT NULL,
-  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `note` mediumtext COLLATE utf8_unicode_ci NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `notification`
+-- Structure de la table `notification`
 --
 
 CREATE TABLE `notification` (
@@ -87,11 +77,57 @@ CREATE TABLE `notification` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Déchargement des données de la table `notification`
+--
+
+INSERT INTO `notification` (`id`, `uid`, `type`, `message`, `created_at`) VALUES
+(52, 1, 'admin', 'Profile Updated.', '2022-10-12 14:15:37');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Structure de la table `role`
+--
+
+CREATE TABLE `role` (
+  `id` int(5) NOT NULL,
+  `libellé` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `role`
+--
+
+INSERT INTO `role` (`id`, `libellé`) VALUES
+(2, 'Franchise'),
+(3, 'Structure');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `structure`
+--
+
+CREATE TABLE `structure` (
+  `id` int(255) NOT NULL,
+  `address` varchar(50) NOT NULL,
+  `city` text NOT NULL,
+  `mail_gerant` varchar(50) NOT NULL,
+  `ui_id` int(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Déchargement des données de la table `structure`
+--
+
+INSERT INTO `structure` (`id`, `address`, `city`, `mail_gerant`, `ui_id`) VALUES
+(1, '28 rue de la croix', 'Nantes', 'Jean.miro@gmail.om', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
 --
 
 CREATE TABLE `users` (
@@ -99,127 +135,137 @@ CREATE TABLE `users` (
   `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `phone` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `gender` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `dob` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `photo` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `address` mediumtext COLLATE utf8_unicode_ci NOT NULL,
-  `city` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `state` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `zip_code` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `country` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `token` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `token_expire` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `verified` tinyint(4) NOT NULL DEFAULT 0,
-  `deleted` tinyint(4) NOT NULL DEFAULT 0
+  `deleted` tinyint(4) NOT NULL DEFAULT 0,
+  `role` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-
--- --------------------------------------------------------
-
 --
--- Table structure for table `visitors`
+-- Déchargement des données de la table `users`
 --
 
-CREATE TABLE `visitors` (
-  `id` int(2) NOT NULL,
-  `hits` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
+INSERT INTO `users` (`id`, `name`, `email`, `password`, `photo`, `token`, `token_expire`, `created_at`, `verified`, `deleted`, `role`) VALUES
+(1, 'Madness Lyon', 'vivi@gmail.com', '$2y$10$9d4t4x1XMuTyWddwMVHQheQEWA3EZ6uvMaCLmam7Ozkjh1ZO4DJyC', 'uploads/12518570_0.png', '96a05d24f2334', '2022-10-13 15:56:38', '2022-10-11 13:16:06', 0, 0, 3),
+(2, 'Fitness Club', 'fitness.club@gmail.com', 'fitness77', '', '', '2022-10-13 13:54:08', '2022-10-13 13:54:08', 0, 0, 2),
+(3, 'Madness', 'george.dim@gmail.com', 'roro1234', '', '', '2022-10-13 13:38:20', '2022-10-13 09:53:22', 1, 0, 2),
+(4, 'Crosfit Club', 'corsfit.c@gmail.com', 'croscros71', '', '', '2022-10-13 13:55:32', '2022-10-13 13:55:32', 0, 0, 2),
+(5, 'Crosfit Paris', 'jean.dimi@orange.fr', 'jjdimi4456', '', '', '2022-10-13 13:57:02', '2022-10-13 13:57:02', 0, 0, 3);
 
 --
--- Indexes for dumped tables
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `admin`
+-- Index pour la table `admin`
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `feedback`
+-- Index pour la table `feedback`
 --
 ALTER TABLE `feedback`
   ADD PRIMARY KEY (`id`),
   ADD KEY `uid` (`uid`);
 
 --
--- Indexes for table `notes`
---
-ALTER TABLE `notes`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `uid` (`uid`);
-
---
--- Indexes for table `notification`
+-- Index pour la table `notification`
 --
 ALTER TABLE `notification`
   ADD PRIMARY KEY (`id`),
   ADD KEY `uid` (`uid`);
 
 --
--- Indexes for table `users`
+-- Index pour la table `role`
 --
-ALTER TABLE `users`
+ALTER TABLE `role`
   ADD PRIMARY KEY (`id`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- Index pour la table `structure`
+--
+ALTER TABLE `structure`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `posseder` (`ui_id`);
+
+--
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `role` (`role`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- AUTO_INCREMENT for table `admin`
+-- AUTO_INCREMENT pour la table `admin`
 --
 ALTER TABLE `admin`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `feedback`
+-- AUTO_INCREMENT pour la table `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `notes`
---
-ALTER TABLE `notes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
-
---
--- AUTO_INCREMENT for table `notification`
+-- AUTO_INCREMENT pour la table `notification`
 --
 ALTER TABLE `notification`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT pour la table `role`
+--
+ALTER TABLE `role`
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `structure`
+--
+ALTER TABLE `structure`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- Constraints for dumped tables
+-- Contraintes pour les tables déchargées
 --
 
 --
--- Constraints for table `feedback`
+-- Contraintes pour la table `feedback`
 --
 ALTER TABLE `feedback`
   ADD CONSTRAINT `feedback_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `notes`
---
-ALTER TABLE `notes`
-  ADD CONSTRAINT `notes_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `notification`
+-- Contraintes pour la table `notification`
 --
 ALTER TABLE `notification`
   ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Contraintes pour la table `structure`
+--
+ALTER TABLE `structure`
+  ADD CONSTRAINT `posseder` FOREIGN KEY (`ui_id`) REFERENCES `users` (`id`);
+
+--
+-- Contraintes pour la table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `role` FOREIGN KEY (`role`) REFERENCES `role` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
